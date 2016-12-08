@@ -9,33 +9,43 @@ const readline = require('readline');
 
 require('dotenv').config();
 
-const JIRA_SERVER = 'jira.sungardomni.com';
+const SERVER = 'services.sungard.com';
 const user = process.env.JIRA_API_USERNAME;
-const query = `status%20not%20in%20(closed%2C%20Cancelled%2C%20Open)%20and%20assignee%20%3D%20${user}%20and%20project%20%3D%20%27UA%27`;
 
 let pass;
 
 if (keytar) {
-  pass = keytar.getPassword(JIRA_SERVER, user);
+  pass = keytar.getPassword(SERVER, user);
 }
 
-function getMyActiveIssues () {
+function createPullRequest (pullRequest) {
 
   if (!pass) {
-    return promptForPassword().then(getMyActiveIssues);
+    return promptForPassword().then(createPullRequest);
   }
   return new Promise((resolve, reject) => {
-    const url = `https://${user}:${pass}@${JIRA_SERVER}/rest/api/2/search?jql=${query}&fields=status,description,summary`;
-    request(url, (error, response, body) => {
+
+    const url = `https://${user}:${pass}@${SERVER}/git/rest/api/1.0/projects/WRUX/repos/trust-unity/pull-requests`;
+
+    request({
+      url,
+      method: 'post',
+      json: true,
+      body: pullRequest
+    }, (error, response, body) => {
       if (error) {
         reject(error);
       }
       if (response.statusCode === 401 || response.statusCode === 403) {
-        resolve(promptForPassword().then(getMyActiveIssues));
+        resolve(promptForPassword().then(createPullRequest));
       } else if (response.statusCode === 200) {
         resolve(JSON.parse(body).issues);
       } else {
-        reject(`Jira responded with HTTP status code ${response.statusCode}`);
+        if (response.body && response.body.errors) {
+          reject(response.body.errors.map(m => m.message));
+        } else {
+          reject(`Bitbucket responded with HTTP status code ${response.statusCode}`);
+        }
       }
     });
   });
@@ -48,12 +58,12 @@ function promptForPassword () {
   });
 
   return new Promise((resolve, reject) => {
-    rl.question(`Please enter password for ${user}@${JIRA_SERVER}: `, (password) => {
+    rl.question(`Please enter password for ${user}@${SERVER}: `, (password) => {
       rl.close();
       if (password) {
         pass = password;
         if (keytar) {
-          keytar.replacePassword(JIRA_SERVER, process.env.JIRA_API_USERNAME, password);
+          keytar.replacePassword(SERVER, process.env.JIRA_API_USERNAME, password);
         }
         resolve();
       } else {
@@ -64,5 +74,5 @@ function promptForPassword () {
 }
 
 module.exports = {
-  getMyActiveIssues,
+  createPullRequest,
 };

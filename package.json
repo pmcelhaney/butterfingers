@@ -4,6 +4,7 @@
   "description": "simple scripts to make life easier",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,7 +14,8 @@
     "inquirer": "^2.0.0",
     "keytar": "^3.0.2",
     "open": "0.0.5",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "shelljs": "^0.7.6"
   },
   "devDependencies": {
     "dotenv": "^2.0.0",

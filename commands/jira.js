@@ -1,4 +1,4 @@
-const jiraClient = require('./jira-client.js');
+const jiraClient = require('../jira-client.js');
 const inquirer = require('inquirer');
 const open = require('open');
 
@@ -26,7 +26,6 @@ function selectAnIssue(issues) {
 }
 
 function openIssue(issueKey) {
-  console.log(`${process.env.JIRA_BASE_URL}/browse/${issueKey}`);
   open(`${process.env.JIRA_BASE_URL}/browse/${issueKey}`);
 }
 
