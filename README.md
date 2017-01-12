@@ -26,5 +26,3 @@ the pull request in Bitbucket, provided that:
 - The target repository is linked to "upstream"
 - The source repository is linked to "origin"
 - The source repo has a branch matching the name of your current branch (i.e. you've pushed your changes)
-=======
->>>>>>> working on "create-pr" command

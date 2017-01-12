@@ -38,13 +38,8 @@ function createPullRequest (pullRequest) {
       }
       if (response.statusCode === 401 || response.statusCode === 403) {
         resolve(promptForPassword().then(createPullRequest));
-<<<<<<< 9713479616bad31e93c03ec47eed336f71490326
-      } else if (response.statusCode === 200) {
-        resolve(JSON.parse(body).issues);
-=======
       } else if (response.statusCode === 200 || response.statusCode === 201) {
         resolve(body);
->>>>>>> working on "create-pr" command
       } else {
         if (response.body && response.body.errors) {
           reject(response.body.errors.map(m => m.message));
