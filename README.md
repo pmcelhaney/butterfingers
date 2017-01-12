@@ -1,12 +1,12 @@
 # Butterfingers
 
-A collection of scripts that help me get more done without leaving the command line.
-<<<<<<< 9713479616bad31e93c03ec47eed336f71490326
-
+A developer's third hand.
 
 ## Installation and Usage
 
+```sh
 npm install --save-dev git+https://Patrick.McElhaney@services.sungard.com/git/scm/wruxp/butterfingers.git#master
+```
 
 Add commands to package.json:
 
@@ -26,3 +26,6 @@ the pull request in Bitbucket, provided that:
 - The target repository is linked to "upstream"
 - The source repository is linked to "origin"
 - The source repo has a branch matching the name of your current branch (i.e. you've pushed your changes)
+- Your Bitbucket username is stored in an [environment variable](dotenv) called BITBUCKET_API_USERNAME.
+
+[dotenv]: https://www.npmjs.com/package/dotenv

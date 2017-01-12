@@ -10,9 +10,13 @@ const readline = require('readline');
 require('dotenv').config();
 
 const SERVER = 'services.sungard.com';
-const user = process.env.JIRA_API_USERNAME;
+const user = process.env.BITBUCKET_API_USERNAME;
 
 let pass;
+
+if (!user) {
+  process.stdout.write('Missing enviornment variable BITBUCKET_API_USERNAME. (See https://www.npmjs.com/package/dotenv)\n');
+}
 
 if (keytar) {
   pass = keytar.getPassword(SERVER, user);
@@ -25,7 +29,10 @@ function createPullRequest (pullRequest) {
   }
   return new Promise((resolve, reject) => {
 
-    const url = `https://${user}:${pass}@${SERVER}/git/rest/api/1.0/projects/WRUX/repos/trust-unity/pull-requests`;
+    const repository = pullRequest.toRef.repository.slug;
+    const project = pullRequest.toRef.repository.project.key;
+
+    const url = `https://${user}:${pass}@${SERVER}/git/rest/api/1.0/projects/${project}/repos/${repository}/pull-requests`;
 
     request({
       url,
