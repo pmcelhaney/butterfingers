@@ -1,6 +1,7 @@
 # Butterfingers
 
 A collection of scripts that help me get more done without leaving the command line.
+<<<<<<< 9713479616bad31e93c03ec47eed336f71490326
 
 
 ## Installation and Usage
@@ -25,3 +26,5 @@ the pull request in Bitbucket, provided that:
 - The target repository is linked to "upstream"
 - The source repository is linked to "origin"
 - The source repo has a branch matching the name of your current branch (i.e. you've pushed your changes)
+=======
+>>>>>>> working on "create-pr" command

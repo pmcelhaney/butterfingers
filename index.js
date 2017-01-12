@@ -1,3 +1,8 @@
+<<<<<<< 9713479616bad31e93c03ec47eed336f71490326
+=======
+#!/usr/bin/env node
+
+>>>>>>> working on "create-pr" command
 const VALID_COMMANDS = ['jira', 'create-pr'];
 
 const commandName = process.argv[2];

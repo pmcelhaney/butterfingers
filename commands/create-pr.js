@@ -1,5 +1,6 @@
 const sh = require('shelljs');
 const bitbucketClient = require('../bitbucket-client.js');
+const open = require('open');
 
 const REVIEWERS = ['Patrick.McElhaney', 'Tony.Stevanovich', 'Joseph.Sutthoff', 'Justin.Fuller2', 'Rasika.Tandale', 'Ninad.Devadkar'];
 
@@ -14,7 +15,7 @@ function createPullRequestJson() {
     'open': true,
     'closed': false,
     'fromRef': {
-      'id': 'refs/heads/pr-test',
+      'id': getBranchName(),
       'repository': {
         'slug': remotes.origin.push.slug,
         'name': null,
@@ -54,7 +55,13 @@ function getBodyFromLastCommit() {
   return sh.exec('git log --pretty="%b" -n 1', { silent: true }).trim();
 }
 
-function onSuccess() {
+
+function getBranchName() {
+  return sh.exec('git symbolic-ref HEAD', { silent: true }).trim();
+}
+
+function onSuccess(body) {
+  open(body.links.self[0].href);
   process.exit();
 }
 
@@ -70,7 +77,7 @@ function getRemotes() {
 }
 
 function parseRemoteValue(value) {
-  const matches = value.match(/([\w.-]+)\/([\w.-]+)\.git /);
+  const matches = value.match(/([\w.~-]+)\/([\w.~-]+)\.git /);
   return {
     url: value.split(' ')[0],
     slug: matches[2],
@@ -84,8 +91,7 @@ function onError(errors) {
 }
 
 function execute() {
-  console.log(createPullRequestJson());
-  //bitbucketClient.createPullRequest(createPullRequestJson()).then(onSuccess, onError);
+  bitbucketClient.createPullRequest(createPullRequestJson()).then(onSuccess, onError);
 }
 
 module.exports = execute;
