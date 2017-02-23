@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const JIRA_SERVER = 'jira.sungardomni.com';
 const user = process.env.JIRA_API_USERNAME;
-const query = `status%20not%20in%20(closed%2C%20Cancelled%2C%20Open)%20and%20assignee%20%3D%20${user}%20and%20project%20%3D%20%27UA%27`;
+const query = encodeURIComponent(`status not in (closed, Cancelled) and assignee = "${user}" ORDER BY status`);
 
 let pass;
 

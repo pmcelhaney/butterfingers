@@ -1,7 +1,7 @@
 const jiraClient = require('../jira-client.js');
 const inquirer = require('inquirer');
 const open = require('open');
-
+const pad = require('pad');
 
 require('dotenv').config();
 
@@ -18,7 +18,7 @@ function selectAnIssue(issues) {
       name: 'issueKey',
       message: 'Select a Jira issue. (If you don\'t see your issue, make sure it\'s assigned to you and in progress.):\n',
       choices: issues.map(issue => ({
-        name: `${issue.key}: ${issue.fields.summary} (${issue.fields.status.name})`,
+        name: `${pad(issue.fields.status.name.slice(0, 20), 20)} ${pad(15, issue.key)} ${issue.fields.summary} `,
         value: issue.key,
       })),
     }
